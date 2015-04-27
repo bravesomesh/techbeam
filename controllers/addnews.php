@@ -8,9 +8,6 @@
 		move_uploaded_file($_FILES["main_image"]["tmp_name"] , "$folder".$_FILES["main_image"]["name"]);
 		move_uploaded_file($_FILES["thumb_image"]["tmp_name"] , "$folder".$_FILES["thumb_image"]["name"]);
 
-		// echo "<p align=center>File ".$_FILES["main_image"]["name"]."loaded...";
-		// mysql_query("INSERT into picture (URL) VALUES('".$_FILES['main_image']['name']."')");
-
 		$sql = "Insert into news (`heading`,`description`,`main_image`,`thumb_image`) 
 				VALUES ('".$heading."','".$description."','".$_FILES['thumb_image']['name']."','".$_FILES['main_image']['name']."')";
 		try {

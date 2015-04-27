@@ -7,11 +7,11 @@
 	    'debug' => true
 	));
 
-	$app->get('/',function(){echo 'index';});
+	$app->get('/','getNews');
 	$app->get('/news','getNews');
 	$app->get('/news/:news_id','getNewsDescription');
 	$app->get('/news/limit/:limit/offset/:offset','getPagination');
-	$app->get('/postnews','postNewsIndex');
+	$app->get('/storenews','postNewsIndex');
 	$app->post('news','postNews');
 
 
@@ -24,6 +24,19 @@
 	// End of Test Rest operation
 
 	$app->run();
+
+	function getNews(){
+		header('Location: http://localhost/techbeam/controllers/getnews.php');
+	}
+
+
+	function getNewsDescription(){
+
+	}
+
+	function getPagination(){
+
+	}
 
 	function postNewsIndex(){
 		echo '<form action=controllers/addnews.php method=post enctype="multipart/form-data">
@@ -51,28 +64,6 @@
 			</tr>
 		</table>
 		</form>';
-	}
-	// GET http://www.yourwebsite.com/api/users
-	function getNews(){
-		$sql = "SELECT name,email,password,uname,post_id FROM users";
-		try {
-		$db = getDB();
-		$stmt = $db->query($sql); 
-		$users = $stmt->fetchAll(PDO::FETCH_OBJ);
-		$db = null;
-		echo '{"users": ' . json_encode($users) . '}';
-		} catch(PDOException $e) {
-		//error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
-		echo '{"error":{"text":'. $e->getMessage() .'}}';
-		}
-	}
-
-	function getNewsDescription(){
-
-	}
-
-	function getPagination(){
-
 	}
 
 	function postNews(){
@@ -121,22 +112,5 @@
 		} catch(PDOException $e) {
 		echo '{"error":{"text":'. $e->getMessage() .'}}';
 		}
-	}
-
-	// POST http://www.yourwebsite.com/api/updates
-	function insertUpdate() {
-	//....
-	//....
-	}
-
-	function getUserUpdate($update_id) {
-	//.....
-	//.....
-	}
-
-	// GET http://www.yourwebsite.com/api/users/search/sri
-	function getUserSearch($query) {
-	//.....
-	//....
 	}
 ?>
