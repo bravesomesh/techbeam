@@ -7,15 +7,78 @@
 	    'debug' => true
 	));
 
+	$app->get('/',function(){echo 'index';});
+	$app->get('/news','getNews');
+	$app->get('/news/:news_id','getNewsDescription');
+	$app->get('/news/limit/:limit/offset/:offset','getPagination');
+	$app->get('/postnews','postNewsIndex');
+	$app->post('news','postNews');
+
+
+	// Test rest operation
 	$app->get('/users','getUsers');
 	$app->get('/updates','getUserUpdates');
 	$app->post('/updates', 'insertUpdate');
 	$app->delete('/updates/delete/:update_id','deleteUpdate');
 	$app->get('/users/search/:query','getUserSearch');
+	// End of Test Rest operation
 
 	$app->run();
 
+	function postNewsIndex(){
+		echo '<form action=controllers/addnews.php method=post enctype="multipart/form-data">
+		<table border="0" cellspacing="0" align=center cellpadding="3" bordercolor="#cccccc">
+			<tr>
+				<td><label>Heading</label></td>
+				<td><textarea cols="38" rows="3" name="heading"></textarea></td>
+			</tr>
+			<tr>
+				<td><label>Description</label></td>
+				<td><textarea cols="38" rows="10" name="description"></textarea></td>
+			</tr>
+			<tr>
+				<td><label>Thumb Image</label></td>
+				<td><input type="file" name="thumb_image" size=45></td>
+			</tr>
+			<tr>
+				<td><label>Main Image</label></td>
+				<td><input type="file" name="main_image" size=45></td>
+			</tr>
+			<tr>
+				<td colspan=2><p align=center>
+					<input type=submit name=action value="Load">
+				</td>
+			</tr>
+		</table>
+		</form>';
+	}
 	// GET http://www.yourwebsite.com/api/users
+	function getNews(){
+		$sql = "SELECT name,email,password,uname,post_id FROM users";
+		try {
+		$db = getDB();
+		$stmt = $db->query($sql); 
+		$users = $stmt->fetchAll(PDO::FETCH_OBJ);
+		$db = null;
+		echo '{"users": ' . json_encode($users) . '}';
+		} catch(PDOException $e) {
+		//error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+		echo '{"error":{"text":'. $e->getMessage() .'}}';
+		}
+	}
+
+	function getNewsDescription(){
+
+	}
+
+	function getPagination(){
+
+	}
+
+	function postNews(){
+		
+	}
+
 	function getUsers() {
 		$sql = "SELECT name,email,password,uname,post_id FROM users";
 		try {
